@@ -31,16 +31,7 @@ body::after {
     opacity: 0.6;
     z-index: -1; /* 배경 이미지 위에 배치 */
 }
-/* 2️⃣ 전체 배경 + 로그인 컨테이너 */
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;       /* 부모 요소(body)의 100%를 차지 */
-    height: 100%;      /* 부모 요소(body)의 100%를 차지 */
-    position: relative;
-    z-index: 1; /* 배경보다 위에 배치 */
-}
+
 
 /* 3️⃣ 배경 이미지 (항상 화면 꽉 채움) */
 .login-container::before {
@@ -77,6 +68,8 @@ body::after {
     box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
     text-align: center;
     z-index: 1; /* 배경보다 위 */
+
+    animation: fadeIn 1s ease-out;
 }
 
 /* 6️⃣ 제목 */
@@ -182,7 +175,7 @@ body::after {
 
 /* 11️⃣ 애니메이션 */
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(30vh); } to { opacity: 1; transform: translateY(0); } }
 
 /* 12️⃣ 반응형 */
 @media (max-width: 480px) {
