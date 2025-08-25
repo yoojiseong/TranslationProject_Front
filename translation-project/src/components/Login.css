@@ -1,0 +1,171 @@
+/* 1️⃣ HTML, BODY 초기화 */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* 스크롤 제거 */
+}
+
+/* 2️⃣ 전체 배경 + 로그인 컨테이너 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1080px;       /* 데스크톱 폭 */
+    height: 1980px;     /* 화면 전체 높이 */
+    position: relative;
+    overflow: hidden;
+}
+
+/* 3️⃣ 배경 이미지 (항상 화면 꽉 채움) */
+.login-container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+    background-size: cover;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+/* 4️⃣ 배경 오버레이 (그라데이션) */
+.login-container::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+/* 5️⃣ 로그인 박스 */
+.login-box {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1; /* 배경보다 위 */
+}
+
+/* 6️⃣ 제목 */
+.login-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* 7️⃣ 폼 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 8️⃣ 입력 그룹 */
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.input-group:focus-within {
+    border-color: #6a5acd;
+}
+
+.input-icon {
+    font-size: 18px;
+    color: #999;
+    margin-right: 10px;
+}
+
+.input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    background: transparent;
+}
+
+/* 오류 메시지 */
+.input.error { border: none; }
+
+.error-text {
+    font-size: 12px;
+    color: red;
+    text-align: left;
+    margin-top: -15px;
+    margin-bottom: -10px;
+}
+
+/* 9️⃣ 버튼 */
+.login-btn {
+    background: #6a5acd;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #5a4ccf;
+    transform: scale(1.03);
+}
+
+.login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinner { animation: spin 1s linear infinite; }
+
+/* 10️⃣ 회원가입 링크 */
+.signup-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+.signup-link {
+    color: #6a5acd;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.signup-link:hover { text-decoration: underline; }
+
+/* 11️⃣ 애니메이션 */
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 12️⃣ 반응형 */
+@media (max-width: 480px) {
+    .login-box { padding: 30px; width: 90%; }
+    .login-title { font-size: 24px; }
+    .login-subtitle { font-size: 12px; }
+    .input { font-size: 13px; }
+    .login-btn { font-size: 14px; padding: 10px; }
+}
