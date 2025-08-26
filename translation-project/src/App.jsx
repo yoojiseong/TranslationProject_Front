@@ -8,12 +8,14 @@ import Login from "./components/Login.jsx";
 import Home from "./components/Home.jsx";
 import HomePageTest from "./components/HomepageTest.jsx";
 import ToolsPage from "./components/ToolsPage.jsx";
+import UserNav from "./components/UserNav.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+            <UserNav />
             <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/register" element={<Register />} />
