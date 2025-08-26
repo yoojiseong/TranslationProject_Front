@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import {FaUser, FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
 import "./Login.css";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../contexts/AuthContext.jsx";
+import apiClient from '../util/axiosInstance.jsx'
 
 const Login = () => {
+
     const [form, setForm] = useState({ memberId: "", password: "" });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     // const { login } = useAuth();
+
+    useEffect( () => {
+        // 1. async 함수를 내부에 정의
+        const checkLoginStatus = async () => {
+                try {
+                    await apiClient.get('/member/me'
+                    );
+                    console.log("자동 로그인 성공, 홈으로 이동합니다.");
+                    navigate('/home');
+
+                } catch (error) {
+                    console.log("유효하지 않은 토큰입니다. 로그인 페이지에 머뭅니다.");
+                }
+        };
+        checkLoginStatus();
+    }, [navigate]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,7 +67,7 @@ const Login = () => {
             localStorage.setItem('accessToken', response.data.accessToken); // 토큰 저장
             localStorage.setItem('refreshToken', response.data.refreshToken); // 토큰 저장
             alert('로그인 성공!');
-            navigate('/'); // 로그인 후 대시보드로 이동
+            navigate('/home'); // 로그인 후 대시보드로 이동
         } catch (error) {
             alert('로그인 실패');
             console.error(error);
