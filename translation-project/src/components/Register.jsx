@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "../styles/Register.css";
+import apiClient from '../util/axiosInstance.jsx'
 
 const Register = () => {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
         username: "",
+        user_name: "",
         email: "",
         password: "",
         passwordConfirm: "",
@@ -15,7 +17,6 @@ const Register = () => {
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [idCheckStatus, setIdCheckStatus] = useState('idle');
-    const [idChecked, setIdChecked] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
@@ -23,7 +24,6 @@ const Register = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
         if (e.target.name === 'username') {
             setIdCheckStatus('idle'); // 아이디 입력 시 중복 확인 상태 초기화
-            setIdChecked(false);
         }
         if (errors[e.target.name]) {
             setErrors({ ...errors, [e.target.name]: null });
@@ -33,12 +33,13 @@ const Register = () => {
     const validateForm = () => {
         let newErrors = {};
         if (!form.username) newErrors.username = "아이디를 입력해주세요.";
+        if (!form.user_name) newErrors.user_name = "이름을 입력해주세요."; // 이름 유효성 검사 추가
         if (!form.email) newErrors.email = "이메일을 입력해주세요.";
         else if (!/\S+@\S+\.\S+/.test(form.email))
             newErrors.email = "올바른 이메일 형식이 아닙니다.";
         if (!form.password) newErrors.password = "비밀번호를 입력해주세요.";
-        else if (form.password.length < 6)
-            newErrors.password = "비밀번호는 6자 이상이어야 합니다.";
+        else if (form.password.length < 4)
+            newErrors.password = "비밀번호는 4자 이상이어야 합니다.";
         if (!form.passwordConfirm) newErrors.passwordConfirm = "비밀번호를 다시 한번 입력해주세요.";
         else if (form.password !== form.passwordConfirm)
             newErrors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
@@ -46,7 +47,6 @@ const Register = () => {
         return newErrors;
     };
 
-    // 아이디 중복 확인 함수
     const handleIdCheck = async () => {
         if (!form.username) {
             setErrors(prev => ({ ...prev, username: "아이디를 먼저 입력해주세요." }));
@@ -54,8 +54,7 @@ const Register = () => {
         }
 
         setIdCheckStatus('checking');
-        setIdChecked(false); // 중복 확인 시작 시 초기화
-        setIsLoading(true); // 로딩 스피너 표시
+        setIsLoading(true);
 
         try {
             const response = await fetch(`http://localhost:8080/member/checkId?memberId=${form.username}`);
@@ -63,28 +62,24 @@ const Register = () => {
 
             if (response.ok) {
                 setIdCheckStatus('available');
-                setIdChecked(true);
-                setErrors(prev => ({ ...prev, username: null })); // 기존 에러 메시지 제거
+                setErrors(prev => ({ ...prev, username: null }));
             } else {
                 setIdCheckStatus('unavailable');
-                setIdChecked(true);
-                setErrors(prev => ({ ...prev, username: message })); // 백엔드에서 받은 메시지 표시
+                setErrors(prev => ({ ...prev, username: message }));
             }
         } catch (error) {
             console.error("아이디 중복 확인 네트워크 오류:", error);
-            setIdCheckStatus('idle'); // 오류 발생 시 상태 초기화
+            setIdCheckStatus('idle');
             setErrors(prev => ({ ...prev, username: "아이디 중복 확인 중 오류가 발생했습니다." }));
         } finally {
-            setIsLoading(false); // 로딩 스피너 해제
+            setIsLoading(false);
         }
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
 
-        // 아이디 중복 확인 상태 최종 검증
         if (idCheckStatus !== 'available') {
             validationErrors.username = validationErrors.username || "아이디 중복 확인을 완료하고 사용 가능한 아이디를 선택해주세요.";
         }
@@ -95,7 +90,7 @@ const Register = () => {
         }
 
         setIsLoading(true);
-        setErrors({}); // 기존 에러 메시지 초기화
+        setErrors({});
 
         try {
             const response = await fetch('http://localhost:8080/member/register', {
@@ -105,6 +100,7 @@ const Register = () => {
                 },
                 body: JSON.stringify({
                     memberId: form.username,
+                    userName: form.user_name,
                     password: form.password,
                     email: form.email,
                 }),
@@ -148,19 +144,31 @@ const Register = () => {
                             className={errors.username ? "input error" : "input"}
                         />
                         <button
-                            type="button" // 폼 제출 방지
+                            type="button"
                             onClick={handleIdCheck}
-                            className="check-id-btn" // 새로운 CSS 클래스
-                            disabled={isLoading || !form.username} // 로딩 중이거나 아이디가 비어있으면 비활성화
+                            className="check-id-btn"
+                            disabled={isLoading || !form.username}
                         >
                             {idCheckStatus === 'checking' ? <FaSpinner className="spinner" /> : "중복 확인"}
                         </button>
                     </div>
                     {errors.username && <p className="error-text">{errors.username}</p>}
-                    {/* 아이디 중복 확인 결과 메시지 */}
                     {idCheckStatus === 'available' && <p className="success-text">사용 가능한 아이디입니다.</p>}
                     {idCheckStatus === 'unavailable' && <p className="error-text">이미 사용 중인 아이디입니다.</p>}
 
+                    {/* 사용자 이름 입력 필드 추가 */}
+                    <div className="input-group">
+                        <FaUser className="input-icon" />
+                        <input
+                            type="text"
+                            name="user_name"
+                            placeholder="이름"
+                            value={form.user_name}
+                            onChange={handleChange}
+                            className={errors.user_name ? "input error" : "input"}
+                        />
+                    </div>
+                    {errors.user_name && <p className="error-text">{errors.user_name}</p>}
 
                     <div className="input-group">
                         <FaEnvelope className="input-icon" />
