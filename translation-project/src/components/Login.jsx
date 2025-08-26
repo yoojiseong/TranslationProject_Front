@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
+import {FaUser, FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
 import "./Login.css";
+import axios from 'axios';
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext.jsx";
 
 const Login = () => {
-    const [form, setForm] = useState({ email: "", password: "" });
+    const [form, setForm] = useState({ memberId: "", password: "" });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+    // const { login } = useAuth();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,26 +21,39 @@ const Login = () => {
 
     const validateForm = () => {
         let newErrors = {};
-        if (!form.email) newErrors.email = "이메일을 입력해주세요.";
-        else if (!/\S+@\S+\.\S+/.test(form.email))
-            newErrors.email = "올바른 이메일 형식이 아닙니다.";
+        if (!form.memberId) newErrors.memberId = "아이디를 입력해주세요.";
+
 
         if (!form.password) newErrors.password = "비밀번호를 입력해주세요.";
-        else if (form.password.length < 6)
-            newErrors.password = "비밀번호는 6자 이상이어야 합니다.";
+        else if (form.password.length < 4)
+            newErrors.password = "비밀번호는 4자 이상이어야 합니다.";
 
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationErrors = validateForm();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
+        try {
+            const response = await axios.post(
+                'http://localhost:8080/generateToken',
+                form,
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                },
+            );
+
+            //추가, 로그인 정보 표기
+            //login({ memberId: this.memberId }); // Context에 로그인 정보 저장
+
+            localStorage.setItem('accessToken', response.data.accessToken); // 토큰 저장
+            localStorage.setItem('refreshToken', response.data.refreshToken); // 토큰 저장
+            alert('로그인 성공!');
+            navigate('/'); // 로그인 후 대시보드로 이동
+        } catch (error) {
+            alert('로그인 실패');
+            console.error(error);
         }
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 2000);
     };
 
     return (
@@ -46,17 +64,17 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="input-group">
-                        <FaEnvelope className="input-icon" />
+                        <FaUser className="input-icon" />
                         <input
-                            type="email"
-                            name="email"
-                            placeholder="이메일"
-                            value={form.email}
+                            type="text"
+                            name="memberId"
+                            placeholder="아이디"
+                            value={form.memberId}
                             onChange={handleChange}
-                            className={errors.email ? "input error" : "input"}
+                            className={errors.memberId ? "input error" : "input"}
                         />
                     </div>
-                    {errors.email && <p className="error-text">{errors.email}</p>}
+                    {errors.memberId && <p className="error-text">{errors.memberId}</p>}
 
                     <div className="input-group">
                         <FaLock className="input-icon" />
