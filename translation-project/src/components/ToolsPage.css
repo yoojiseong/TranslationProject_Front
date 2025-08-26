@@ -1,0 +1,181 @@
+/* 이 페이지 전체를 위한 레이아웃 스타일 */
+.tools-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 메인 콘텐츠(탭과 입력창 포함) 영역 */
+.tools-container {
+    width: 900px;
+    max-width: 900px;
+    margin: 2rem auto; /* 이 상하 여백(2rem)이 다시 적용됩니다. */
+    /* ⚠️ flex-grow: 1; 를 제거했습니다. */
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* 탭 버튼 컨테이너 */
+.tab-container {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #4a5568;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+    background-color: rgba(237, 242, 247, 0.9);
+}
+
+.tab-button.active {
+    color: white;
+    background-color: #4f46e5;
+    box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+}
+
+/* 탭 콘텐츠 영역 */
+.content-area {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    box-sizing: border-box;
+}
+
+.tool-content-wrapper {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* 입력/출력 텍스트 영역 */
+.io-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.io-box textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.io-box textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+.io-box textarea[readOnly] {
+    background-color: #f7fafc;
+    color: #4a5568;
+}
+
+/* 실행 버튼 */
+.action-button {
+    background-color: #38a169;
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 700;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #2f855a;
+    transform: scale(1.02);
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-message {
+    color: #e53e3e; /* 빨간색 계열 */
+    font-weight: 600;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* 언어 선택 UI 전체 컨테이너 */
+.language-selector-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background-color: #f7fafc;
+    border-radius: 12px;
+}
+
+/* 언어 선택 드롭다운 (<select>) 스타일 */
+.language-select {
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4a5568;
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.language-select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+/* 언어 전환 버튼 스타일 */
+.swap-button {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #4f46e5;
+    cursor: pointer;
+    padding: 0 1rem;
+    transition: transform 0.2s ease;
+}
+
+.swap-button:hover {
+    transform: scale(1.1) rotate(180deg);
+}
