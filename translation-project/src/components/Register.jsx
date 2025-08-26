@@ -65,12 +65,12 @@ const Register = () => {
                 setErrors(prev => ({ ...prev, username: null }));
             } else {
                 setIdCheckStatus('unavailable');
-                setErrors(prev => ({ ...prev, username: message }));
+                setErrors(prev => ({ ...prev, username: "이미 사용 중인 아이디입니다." }));
             }
         } catch (error) {
             console.error("아이디 중복 확인 네트워크 오류:", error);
             setIdCheckStatus('idle');
-            setErrors(prev => ({ ...prev, username: "아이디 중복 확인 중 오류가 발생했습니다." }));
+            setErrors(prev => ({ ...prev, username: null }));
         } finally {
             setIsLoading(false);
         }
@@ -154,7 +154,6 @@ const Register = () => {
                     </div>
                     {errors.username && <p className="error-text">{errors.username}</p>}
                     {idCheckStatus === 'available' && <p className="success-text">사용 가능한 아이디입니다.</p>}
-                    {idCheckStatus === 'unavailable' && <p className="error-text">이미 사용 중인 아이디입니다.</p>}
 
                     {/* 사용자 이름 입력 필드 추가 */}
                     <div className="input-group">
