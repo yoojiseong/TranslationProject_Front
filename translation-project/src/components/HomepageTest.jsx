@@ -47,7 +47,7 @@ const HomePage = () => {
                     <p className="subtitle-text">
                         간편하고 강력한 번역, 요약, 의역 도구를 만나보세요.
                     </p>
-                    <a href="/tools" className="start-button">
+                    <a href="/login" className="start-button">
                         지금 시작하기
                     </a>
                 </div>
