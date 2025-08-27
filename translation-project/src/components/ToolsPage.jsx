@@ -5,7 +5,9 @@ import Header from './Header.jsx';
 import UserNav from './UserNav.jsx';
 import Footer from './Footer.jsx';
 import './ToolsPage.css';
-import apiClient from '../util/axiosInstance.jsx'
+import apiClient from '../util/axiosInstance.jsx';
+import MinCharacterCounter from './MinCharacterCounter.jsx';
+import SimpleCharacterCounter from './SimpleCharacterCounter.jsx';
 
 const ToolInterface = ({ toolName, apiEndpoint }) => {
     const [inputText, setInputText] = useState('');
@@ -27,6 +29,12 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
     const handleSubmit = async () => {
         if (!inputText.trim()) {
             setError('내용을 입력해주세요.');
+            return;
+        }
+        
+        // 요약 기능일 때 최소 글자수 체크
+        if (toolName === '요약' && inputText.length < 50) {
+            setError('요약을 위해 최소 50자 이상 입력해주세요.');
             return;
         }
         setIsLoading(true);
@@ -57,9 +65,10 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
 
     return (
         <div className="tool-content-wrapper">
-            {/* ✅ 2. "번역" 탭일 때만 언어 선택 UI를 표시 */}
-            {toolName === '번역' && (
-                <div className="language-selector-container">
+            {/* ✅ 2. 언어 선택 영역 - 번역 탭에서만 내용 표시, 다른 탭에서는 빈 공간 확보 */}
+            <div className={`language-selector-container ${toolName === '번역' ? 'translate-tab' : ''}`}>
+                {toolName === '번역' && (
+                    <>
                     {/* 소스 언어 선택 */}
                     <select className="language-select" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
                         <option value="ko">한국어</option>
@@ -112,8 +121,9 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                         <option value="sv">스웨덴어</option>
                         <option value="ar">아랍어</option>
                     </select>
-                </div>
-            )}
+                    </>
+                )}
+            </div>
 
             <div className="io-box">
                 <textarea
@@ -122,6 +132,22 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                     onChange={(e) => setInputText(e.target.value)}
                     disabled={isLoading}
                 />
+                
+                {/* 🆕 글자수 체크 컴포넌트 추가 */}
+                {toolName === '요약' ? (
+                    <MinCharacterCounter
+                        text={inputText}
+                        minLength={50}
+                        toolName={toolName}
+                        className="tool-counter"
+                    />
+                ) : (
+                    <SimpleCharacterCounter
+                        text={inputText}
+                        className="tool-counter"
+                    />
+                )}
+                
                 <textarea
                     placeholder={`${toolName} 결과`}
                     value={outputText}
@@ -131,7 +157,7 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
             <button
                 className="action-button"
                 onClick={handleSubmit}
-                disabled={isLoading}
+                disabled={isLoading || (toolName === '요약' && inputText.length < 50)}
             >
                 {isLoading ? '변환 중...' : `${toolName}하기`}
             </button>

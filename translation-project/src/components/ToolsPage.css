@@ -7,9 +7,9 @@
 
 /* 메인 콘텐츠(탭과 입력창 포함) 영역 */
 .tools-container {
-    width: 900px;
-    max-width: 900px;
-    margin: 2rem auto; /* 이 상하 여백(2rem)이 다시 적용됩니다. */
+    width: 800px; /* 너비 축소 900px -> 800px */
+    max-width: 800px;
+    margin: 0.5rem auto; /* 상하 여백 더 줄임 1rem -> 0.5rem */
     /* ⚠️ flex-grow: 1; 를 제거했습니다. */
     animation: fadeIn 0.8s ease-out;
 }
@@ -50,10 +50,10 @@
 /* 탭 콘텐츠 영역 */
 .content-area {
     background: rgba(255, 255, 255, 0.95);
-    padding: 2.5rem;
+    padding: 2rem; /* 패딩 축소 2.5rem -> 2rem */
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
+    margin-top: 0.75rem; /* 상단 여백 축소 1rem -> 0.75rem */
     box-sizing: border-box;
 }
 
@@ -65,13 +65,13 @@
 .io-box {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1.25rem; /* 간격 축소 1.5rem -> 1.25rem */
+    margin-bottom: 1.25rem; /* 하단 여백 축소 1.5rem -> 1.25rem */
 }
 
 .io-box textarea {
     width: 100%;
-    min-height: 180px;
+    min-height: 160px; /* 높이 축소 180px -> 160px */
     padding: 1rem;
     border-radius: 12px;
     border: 2px solid #e2e8f0;
@@ -136,10 +136,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem; /* 하단 여백 축소 1rem -> 0.75rem */
     padding: 0.5rem;
-    background-color: #f7fafc;
     border-radius: 12px;
+    min-height: 65px; /* 높이 약간 축소 70px -> 65px */
+    box-sizing: border-box;
+}
+
+/* 번역 탭용 클래스 */
+.language-selector-container.translate-tab {
+    background-color: #f7fafc;
 }
 
 /* 언어 선택 드롭다운 (<select>) 스타일 */
