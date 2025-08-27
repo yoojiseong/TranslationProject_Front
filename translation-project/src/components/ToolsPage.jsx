@@ -195,7 +195,6 @@ const ToolsPage = () => {
 
     return (
         <div className="tools-page-wrapper">
-            <Header />
             <UserNav />
             <main className="tools-container">
                 <div className="tab-container">

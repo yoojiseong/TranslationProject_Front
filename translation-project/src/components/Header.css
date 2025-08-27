@@ -3,13 +3,13 @@
     box-sizing: border-box;
     width: 100%;
     display: flex;
-    justify-content: space-between; /* 오른쪽 메뉴를 오른쪽 끝으로 보냅니다 */
+    justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
     background-color: transparent;
-    font-family: Arial, sans-serif;
-    min-height: 100px; /* 헤더의 최소 높이를 보장하여 잘림 방지 */
-    position: relative; /* 👈 [가장 중요] 자식 요소의 absolute 포지션 기준점 */
+    min-height: 100px;
+    position: relative;
+    z-index: 10; /* 👈 다른 콘텐츠보다 위에 있도록 z-index 추가 */
 }
 
 .project-title {
@@ -18,12 +18,10 @@
     color: #1a2b3c;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
-
-    /* 헤더의 정중앙에 위치하도록 설정 */
     position: absolute;
     left: 50%;
-    top: 60%; /* 👈 세로 중앙 정렬 기준 */
-    transform: translate(-50%, -50%); /* 👈 정중앙 배치를 위한 최종 보정 */
+    top: 50%; /* 👈 60% -> 50%로 변경하여 잘림 방지 */
+    transform: translate(-50%, -50%);
 }
 
 .header-right {
