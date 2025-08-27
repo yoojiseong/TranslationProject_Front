@@ -1,0 +1,61 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 55px 30px;
+  background-color: transparent; /* You can adjust the background color */
+  font-family: Arial, sans-serif;
+  position: relative; /* Added for absolute positioning of children */
+}
+
+.project-title {
+  margin: 0;
+  font-size: 48px;
+  color: #1a2b3c;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  top: 50%; /* Added for vertical centering */
+  transform: translate(-50%, -50%); /* Combined for both horizontal and vertical centering */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.header-right {
+  position: absolute;
+  top: 15px; /* Adjust as needed */
+  right: 30px; /* Adjust as needed */
+  display: flex; /* Added back */
+  align-items: center; /* Added back */
+}
+
+.welcome-message {
+  margin-right: 20px;
+  color: #555;
+  font-size: 16px;
+}
+
+.header-nav {
+  /* No specific styles needed here, as it's a simple container */
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-left: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #007bff; /* Link color */
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0056b3; /* Hover effect */
+}

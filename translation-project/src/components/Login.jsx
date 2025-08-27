@@ -12,7 +12,7 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    // const { login } = useAuth();
+    const { login } = useAuth();
 
     useEffect( () => {
         // 1. async 함수를 내부에 정의
@@ -21,7 +21,7 @@ const Login = () => {
                     await apiClient.get('/member/me'
                     );
                     console.log("자동 로그인 성공, 홈으로 이동합니다.");
-                    navigate('/home');
+                    navigate('/toolspage');
 
                 } catch (error) {
                     console.log("유효하지 않은 토큰입니다. 로그인 페이지에 머뭅니다.");
@@ -66,8 +66,13 @@ const Login = () => {
 
             localStorage.setItem('accessToken', response.data.accessToken); // 토큰 저장
             localStorage.setItem('refreshToken', response.data.refreshToken); // 토큰 저장
+            // 사용자 정보 가져오기
+            const userDetailsResponse = await apiClient.get('/member/me');
+            const userName = userDetailsResponse.data.userName; // userName 속성이 있다고 가정
+
+            login({ memberId: form.memberId, userName: userName }); // Context에 로그인 정보 저장
             alert('로그인 성공!');
-            navigate('/home'); // 로그인 후 대시보드로 이동
+            navigate('/toolspage'); // 로그인 후 대시보드로 이동
         } catch (error) {
             alert('로그인 실패');
             console.error(error);
