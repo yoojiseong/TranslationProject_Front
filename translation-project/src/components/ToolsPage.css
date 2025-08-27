@@ -7,10 +7,9 @@
 
 /* 메인 콘텐츠(탭과 입력창 포함) 영역 */
 .tools-container {
-    width: 800px; /* 너비 축소 900px -> 800px */
-    max-width: 800px;
-    margin: 0.5rem auto; /* 상하 여백 더 줄임 1rem -> 0.5rem */
-    /* ⚠️ flex-grow: 1; 를 제거했습니다. */
+    width: 900px;
+    max-width: 900px;
+    margin: 2rem auto;
     animation: fadeIn 0.8s ease-out;
 }
 
@@ -50,10 +49,10 @@
 /* 탭 콘텐츠 영역 */
 .content-area {
     background: rgba(255, 255, 255, 0.95);
-    padding: 2rem; /* 패딩 축소 2.5rem -> 2rem */
+    padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    margin-top: 0.75rem; /* 상단 여백 축소 1rem -> 0.75rem */
+    margin-top: 1rem;
     box-sizing: border-box;
 }
 
@@ -65,13 +64,13 @@
 .io-box {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem; /* 간격 축소 1.5rem -> 1.25rem */
-    margin-bottom: 1.25rem; /* 하단 여백 축소 1.5rem -> 1.25rem */
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .io-box textarea {
     width: 100%;
-    min-height: 160px; /* 높이 축소 180px -> 160px */
+    min-height: 180px;
     padding: 1rem;
     border-radius: 12px;
     border: 2px solid #e2e8f0;
@@ -125,7 +124,7 @@
 }
 
 .error-message {
-    color: #e53e3e; /* 빨간색 계열 */
+    color: #e53e3e;
     font-weight: 600;
     margin-top: 1rem;
     text-align: center;
@@ -134,18 +133,12 @@
 /* 언어 선택 UI 전체 컨테이너 */
 .language-selector-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* 가운데 정렬로 변경 */
     align-items: center;
-    margin-bottom: 0.75rem; /* 하단 여백 축소 1rem -> 0.75rem */
+    margin-bottom: 1.5rem;
     padding: 0.5rem;
-    border-radius: 12px;
-    min-height: 65px; /* 높이 약간 축소 70px -> 65px */
-    box-sizing: border-box;
-}
-
-/* 번역 탭용 클래스 */
-.language-selector-container.translate-tab {
     background-color: #f7fafc;
+    border-radius: 12px;
 }
 
 /* 언어 선택 드롭다운 (<select>) 스타일 */
@@ -163,6 +156,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    max-width: 200px; /* 너비 제한 */
 }
 
 .language-select:focus {
@@ -184,4 +178,16 @@
 
 .swap-button:hover {
     transform: scale(1.1) rotate(180deg);
+}
+
+/* ✅ [추가] 요약/의역 탭의 단일 언어 선택기 스타일 */
+.single-language-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.single-language-selector span {
+    font-weight: 600;
+    color: #4a5568;
 }

@@ -31,7 +31,7 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
             setError('내용을 입력해주세요.');
             return;
         }
-        
+
         // 요약 기능일 때 최소 글자수 체크
         if (toolName === '요약' && inputText.length < 50) {
             setError('요약을 위해 최소 50자 이상 입력해주세요.');
@@ -45,7 +45,7 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
             // ✅ 3. API로 보낼 데이터에 선택된 언어 상태를 반영
             const requestData = toolName === '번역'
                 ? { text: inputText, sourceLang: sourceLang, targetLang: targetLang }
-                : { text: inputText };
+                : { text: inputText, language: sourceLang };
 
             const response = await apiClient.post(apiEndpoint, requestData);
             const resultText = response.data.result || response.data.translatedText;
@@ -66,62 +66,81 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
     return (
         <div className="tool-content-wrapper">
             {/* ✅ 2. 언어 선택 영역 - 번역 탭에서만 내용 표시, 다른 탭에서는 빈 공간 확보 */}
-            <div className={`language-selector-container ${toolName === '번역' ? 'translate-tab' : ''}`}>
-                {toolName === '번역' && (
+            <div className="language-selector-container">
+                {toolName === '번역' ? (
                     <>
-                    {/* 소스 언어 선택 */}
-                    <select className="language-select" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
-                        <option value="ko">한국어</option>
-                        <option value="en">영어</option>
-                        <option value="ja">일본어</option>
-                        <option value="zh-CN">중국어 (간체)</option>
-                        <option value="zh-TW">중국어 (번체)</option>
-                        <option value="vi">베트남어</option>
-                        <option value="id">인도네시아어</option>
-                        <option value="th">태국어</option>
-                        <option value="de">독일어</option>
-                        <option value="ru">러시아어</option>
-                        <option value="es">스페인어</option>
-                        <option value="it">이탈리아어</option>
-                        <option value="fr">프랑스어</option>
-                        <option value="hi">힌디어</option>
-                        <option value="pt">포르투갈어</option>
-                        <option value="tr">튀르키예어 (터키어)</option>
-                        <option value="pl">폴란드어</option>
-                        <option value="nl">네덜란드어</option>
-                        <option value="sv">스웨덴어</option>
-                        <option value="ar">아랍어</option>
-                    </select>
-
-                    {/* 언어 전환 버튼 */}
-                    <button className="swap-button" onClick={handleSwapLanguages}>
-                        ⇄
-                    </button>
-
-                    {/* 타겟 언어 선택 */}
-                    <select className="language-select" value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
-                        <option value="ko">한국어</option>
-                        <option value="en">영어</option>
-                        <option value="ja">일본어</option>
-                        <option value="zh-CN">중국어 (간체)</option>
-                        <option value="zh-TW">중국어 (번체)</option>
-                        <option value="vi">베트남어</option>
-                        <option value="id">인도네시아어</option>
-                        <option value="th">태국어</option>
-                        <option value="de">독일어</option>
-                        <option value="ru">러시아어</option>
-                        <option value="es">스페인어</option>
-                        <option value="it">이탈리아어</option>
-                        <option value="fr">프랑스어</option>
-                        <option value="hi">힌디어</option>
-                        <option value="pt">포르투갈어</option>
-                        <option value="tr">튀르키예어 (터키어)</option>
-                        <option value="pl">폴란드어</option>
-                        <option value="nl">네덜란드어</option>
-                        <option value="sv">스웨덴어</option>
-                        <option value="ar">아랍어</option>
-                    </select>
+                        <select className="language-select" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
+                            <option value="ko">한국어</option>
+                            <option value="en">영어</option>
+                            <option value="ja">일본어</option>
+                            <option value="zh-CN">중국어 (간체)</option>
+                            <option value="zh-TW">중국어 (번체)</option>
+                            <option value="vi">베트남어</option>
+                            <option value="id">인도네시아어</option>
+                            <option value="th">태국어</option>
+                            <option value="de">독일어</option>
+                            <option value="ru">러시아어</option>
+                            <option value="es">스페인어</option>
+                            <option value="it">이탈리아어</option>
+                            <option value="fr">프랑스어</option>
+                            <option value="hi">힌디어</option>
+                            <option value="pt">포르투갈어</option>
+                            <option value="tr">튀르키예어 (터키어)</option>
+                            <option value="pl">폴란드어</option>
+                            <option value="nl">네덜란드어</option>
+                            <option value="sv">스웨덴어</option>
+                            <option value="ar">아랍어</option>
+                        </select>
+                        <button className="swap-button" onClick={handleSwapLanguages}>⇄</button>
+                        <select className="language-select" value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
+                            <option value="ko">한국어</option>
+                            <option value="en">영어</option>
+                            <option value="ja">일본어</option>
+                            <option value="zh-CN">중국어 (간체)</option>
+                            <option value="zh-TW">중국어 (번체)</option>
+                            <option value="vi">베트남어</option>
+                            <option value="id">인도네시아어</option>
+                            <option value="th">태국어</option>
+                            <option value="de">독일어</option>
+                            <option value="ru">러시아어</option>
+                            <option value="es">스페인어</option>
+                            <option value="it">이탈리아어</option>
+                            <option value="fr">프랑스어</option>
+                            <option value="hi">힌디어</option>
+                            <option value="pt">포르투갈어</option>
+                            <option value="tr">튀르키예어 (터키어)</option>
+                            <option value="pl">폴란드어</option>
+                            <option value="nl">네덜란드어</option>
+                            <option value="sv">스웨덴어</option>
+                            <option value="ar">아랍어</option>
+                        </select>
                     </>
+                ) : (
+                    <div className="single-language-selector">
+                        <span>언어 선택</span>
+                        <select className="language-select" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
+                            <option value="ko">한국어</option>
+                            <option value="en">영어</option>
+                            <option value="ja">일본어</option>
+                            <option value="zh-CN">중국어 (간체)</option>
+                            <option value="zh-TW">중국어 (번체)</option>
+                            <option value="vi">베트남어</option>
+                            <option value="id">인도네시아어</option>
+                            <option value="th">태국어</option>
+                            <option value="de">독일어</option>
+                            <option value="ru">러시아어</option>
+                            <option value="es">스페인어</option>
+                            <option value="it">이탈리아어</option>
+                            <option value="fr">프랑스어</option>
+                            <option value="hi">힌디어</option>
+                            <option value="pt">포르투갈어</option>
+                            <option value="tr">튀르키예어 (터키어)</option>
+                            <option value="pl">폴란드어</option>
+                            <option value="nl">네덜란드어</option>
+                            <option value="sv">스웨덴어</option>
+                            <option value="ar">아랍어</option>
+                        </select>
+                    </div>
                 )}
             </div>
 
@@ -132,7 +151,7 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                     onChange={(e) => setInputText(e.target.value)}
                     disabled={isLoading}
                 />
-                
+
                 {/* 🆕 글자수 체크 컴포넌트 추가 */}
                 {toolName === '요약' ? (
                     <MinCharacterCounter
@@ -147,7 +166,7 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                         className="tool-counter"
                     />
                 )}
-                
+
                 <textarea
                     placeholder={`${toolName} 결과`}
                     value={outputText}
