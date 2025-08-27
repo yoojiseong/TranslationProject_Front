@@ -9,6 +9,7 @@ import Home from "./components/Home.jsx";
 import HomePageTest from "./components/HomepageTest.jsx";
 import ToolsPage from "./components/ToolsPage.jsx";
 import UserNav from "./components/UserNav.jsx";
+import MyPage from "./components/MyPage.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route index element={<HomePageTest />} />
                 <Route path="/toolspage" element={<ToolsPage />} />
+                <Route path="/mypage" element={<MyPage />} />
             </Routes>
 
     </>

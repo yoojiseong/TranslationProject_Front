@@ -14,7 +14,22 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    
+    useEffect( () => {
+        // 1. async 함수를 내부에 정의
+        const checkLoginStatus = async () => {
+            try {
+                await apiClient.get('/member/me'
+                );
+                console.log("자동 로그인 성공, 홈으로 이동합니다.");
+                navigate('/toolspage');
+
+                // eslint-disable-next-line no-unused-vars
+            } catch (error) {
+                console.log("유효하지 않은 토큰입니다. 로그인 페이지에 머뭅니다.");
+            }
+        };
+        checkLoginStatus();
+    }, [navigate]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });

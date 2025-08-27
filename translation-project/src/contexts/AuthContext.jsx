@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import apiClient from '../util/axiosInstance'; // apiClient 임포트
+import apiClient from '../util/axiosInstance';
+import {useNavigate} from "react-router-dom"; // apiClient 임포트
+
 
 // Context 생성
 const AuthContext = createContext(null);
@@ -10,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [logoutTimer, setLogoutTimer] = useState(null); // 로그아웃 타이머 상태
     const [remainingTime, setRemainingTime] = useState(null); // 남은 시간 (초 단위)
     const [intervalId, setIntervalId] = useState(null); // ✅ 인터벌 ID 저장
+    const navigate = useNavigate();
 
     // Function to fetch user profile
     const fetchUserProfile = async () => {
@@ -17,7 +20,10 @@ export const AuthProvider = ({ children }) => {
             const response = await apiClient.get('/member/me'); // Adjust API endpoint as needed
             if (response.data && response.data.userName) { // 참고: userName (N 대문자)
                 setUser(prevUser => ({ ...prevUser, userName: response.data.userName })); // 참고: userName (N 대문자)
-                localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user')), userName: response.data.userName })); // 참고: userName (N 대문자)
+                localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user')),
+                    userName: response.data.userName,
+                    email: response.data.email
+                })); // 참고: userName (N 대문자)
             }
         } catch (error) {
             console.error("Failed to fetch user profile:", error);
@@ -43,6 +49,7 @@ export const AuthProvider = ({ children }) => {
                 }
             } else {
                 logout(); // 만료된 경우 자동 로그아웃
+                navigate('/login');
             }
         }
     }, []);
@@ -93,7 +100,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('expireTime');
         setRemainingTime(null);
-        if (logoutTimer) clearTimeout(logoutTimer);
+        if (logoutTimer) {
+            clearTimeout(logoutTimer);
+            navigate('/login');
+        }
     };
 
     // 🔹 10분 연장 기능 (중복 실행 방지)
