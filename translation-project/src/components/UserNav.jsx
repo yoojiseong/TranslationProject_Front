@@ -16,7 +16,7 @@ const UserNav = () => {
   return (
     <div className="user-nav-container">
       <span className="welcome-message">
-        {userName}님 환영합니다
+        {userName}님 환영합니다 👋
       </span>
       <nav className="header-nav">
         <ul className="nav-list">

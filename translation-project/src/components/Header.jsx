@@ -16,7 +16,7 @@ const Header = () => {
 
   return (
     <header className="main-header">
-      <h1 className="project-title"><MdGTranslate /> Translate Project</h1>
+      <h1 className="project-title"><MdGTranslate color="#6a5acd" /> Translate Project</h1>
       
     </header>
   );

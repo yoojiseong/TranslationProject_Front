@@ -3,7 +3,7 @@ import {Navigate} from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header.jsx';
 import UserNav from './UserNav.jsx';
-// import Footer from './Footer.jsx';
+import Footer from './Footer.jsx';
 import './ToolsPage.css';
 import apiClient from '../util/axiosInstance.jsx'
 
@@ -180,7 +180,7 @@ const ToolsPage = () => {
                     {activeTab === 'paraphrase' && <ToolInterface toolName="의역" apiEndpoint="/paraphrase"/>}
                 </div>
             </main>
-            {/*<Footer />*/}
+            <Footer />
         </div>
     );
 };
