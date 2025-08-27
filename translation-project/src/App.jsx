@@ -15,7 +15,7 @@ function App() {
 
   return (
     <>
-            <UserNav />
+            
             <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/register" element={<Register />} />
