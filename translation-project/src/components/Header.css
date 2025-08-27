@@ -1,61 +1,91 @@
+/* --- 기본 스타일 (데스크탑) --- */
 .main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 60px 30px; /* 패딩 다시 늘림 30px -> 60px (회원가입과 동일 선상) */
-  background-color: transparent; /* You can adjust the background color */
-  font-family: Arial, sans-serif;
-  position: relative; /* Added for absolute positioning of children */
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* 오른쪽 메뉴를 오른쪽 끝으로 보냅니다 */
+    align-items: center;
+    padding: 20px 40px;
+    background-color: transparent;
+    font-family: Arial, sans-serif;
+    min-height: 100px; /* 헤더의 최소 높이를 보장하여 잘림 방지 */
+    position: relative; /* 👈 [가장 중요] 자식 요소의 absolute 포지션 기준점 */
 }
 
 .project-title {
-  margin: 0;
-  font-size: 48px;
-  color: #1a2b3c;
-  font-weight: bold;
-  position: absolute;
-  left: 50%;
-  top: 50%; /* Added for vertical centering */
-  transform: translate(-50%, -50%); /* Combined for both horizontal and vertical centering */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    font-size: 48px;
+    color: #1a2b3c;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
+
+    /* 헤더의 정중앙에 위치하도록 설정 */
+    position: absolute;
+    left: 50%;
+    top: 60%; /* 👈 세로 중앙 정렬 기준 */
+    transform: translate(-50%, -50%); /* 👈 정중앙 배치를 위한 최종 보정 */
 }
 
 .header-right {
-  position: absolute;
-  top: 15px; /* Adjust as needed */
-  right: 30px; /* Adjust as needed */
-  display: flex; /* Added back */
-  align-items: center; /* Added back */
+    display: flex;
+    align-items: center;
+    /* z-index를 추가하여 타이틀과 겹치지 않게 함 */
+    position: relative;
+    z-index: 2;
 }
 
 .welcome-message {
-  margin-right: 20px;
-  color: #555;
-  font-size: 16px;
-}
-
-.header-nav {
-  /* No specific styles needed here, as it's a simple container */
+    margin-right: 20px;
+    color: #555;
+    font-size: 16px;
 }
 
 .nav-list {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-item {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 .nav-link {
-  text-decoration: none;
-  color: #007bff; /* Link color */
-  font-weight: 500;
-  transition: color 0.3s ease;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #0056b3; /* Hover effect */
+    color: #0056b3;
+}
+
+/* --- 태블릿 반응형 (768px 이하) --- */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 20px 30px;
+    }
+    .project-title {
+        font-size: 36px;
+    }
+    .welcome-message {
+        font-size: 14px;
+    }
+}
+
+/* --- 모바일 반응형 (500px 이하) --- */
+@media (max-width: 500px) {
+    .main-header {
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 15px;
+        min-height: auto; /* 모바일에선 최소 높이 제거 */
+    }
+
+    .project-title {
+        position: static; /* absolute 해제 */
+        transform: none;
+    }
 }
