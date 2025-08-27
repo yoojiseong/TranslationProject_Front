@@ -21,7 +21,7 @@ const Login = () => {
                     await apiClient.get('/member/me'
                     );
                     console.log("자동 로그인 성공, 홈으로 이동합니다.");
-                    navigate('/home');
+                    navigate('/toolspage');
 
                 } catch (error) {
                     console.log("유효하지 않은 토큰입니다. 로그인 페이지에 머뭅니다.");
@@ -72,7 +72,7 @@ const Login = () => {
 
             login({ memberId: form.memberId, userName: userName }); // Context에 로그인 정보 저장
             alert('로그인 성공!');
-            navigate('/home'); // 로그인 후 대시보드로 이동
+            navigate('/toolspage'); // 로그인 후 대시보드로 이동
         } catch (error) {
             alert('로그인 실패');
             console.error(error);
