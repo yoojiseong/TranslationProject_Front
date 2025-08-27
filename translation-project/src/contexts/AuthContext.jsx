@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import apiClient from '../util/axiosInstance'; // apiClient 임포트
 
 // Context 생성
 const AuthContext = createContext(null);
@@ -10,6 +11,20 @@ export const AuthProvider = ({ children }) => {
     const [remainingTime, setRemainingTime] = useState(null); // 남은 시간 (초 단위)
     const [intervalId, setIntervalId] = useState(null); // ✅ 인터벌 ID 저장
 
+    // Function to fetch user profile
+    const fetchUserProfile = async () => {
+        try {
+            const response = await apiClient.get('/member/me'); // Adjust API endpoint as needed
+            if (response.data && response.data.userName) { // 참고: userName (N 대문자)
+                setUser(prevUser => ({ ...prevUser, userName: response.data.userName })); // 참고: userName (N 대문자)
+                localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user')), userName: response.data.userName })); // 참고: userName (N 대문자)
+            }
+        } catch (error) {
+            console.error("Failed to fetch user profile:", error);
+            // Optionally, handle error, e.g., logout if token is invalid
+        }
+    };
+
     // 🔹 1️⃣ 컴포넌트가 처음 로드될 때 localStorage에서 로그인 정보 로드
     useEffect(() => {
         const savedUser = localStorage.getItem('user');
@@ -19,8 +34,13 @@ export const AuthProvider = ({ children }) => {
             const currentTime = new Date().getTime();
             const timeLeft = parseInt(expireTime, 10) - currentTime;
             if (timeLeft > 0) {
-                setUser(JSON.parse(savedUser));
+                const parsedUser = JSON.parse(savedUser);
+                setUser(parsedUser);
                 startAutoLogout(timeLeft);
+                // Fetch user profile to ensure username is up-to-date
+                if (!parsedUser.userName) { // userName이 없는 경우에만 가져옴 (참고: userName N 대문자)
+                    fetchUserProfile();
+                }
             } else {
                 logout(); // 만료된 경우 자동 로그아웃
             }
@@ -59,11 +79,10 @@ export const AuthProvider = ({ children }) => {
     // 로그인 함수
     const login = (userData) => {
         setUser(userData);
-        // const expireTime = new Date().getTime() + 600000; // 10분 후 만료 시간 설정 (600,000ms)
         localStorage.setItem('user', JSON.stringify(userData));
-        // localStorage.setItem('expireTime', expireTime.toString()); // 만료 시간 저장
-        // startAutoLogout(600000); // 10분 후 자동 로그아웃 타이머 시작
         extendSession();
+        // After successful login, fetch user profile to get username
+        fetchUserProfile(); // Fetch username immediately after login
     };
 
     // 로그아웃 함수
@@ -90,8 +109,16 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, login, logout, extendSession, remainingTime }}
+            value={{
+                user,
+                isAuthenticated: !!user, // Add isAuthenticated
+                login,
+                logout,
+                extendSession,
+                remainingTime
+            }}
         >
+            
             {children}
         </AuthContext.Provider>
     );
