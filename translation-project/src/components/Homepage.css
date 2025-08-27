@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 4rem 2rem; /* 충분한 상하 여백 제공 */
+    padding: 4rem 2rem;
 }
 /* 중앙 컨텐츠 박스 */
 .home-box {

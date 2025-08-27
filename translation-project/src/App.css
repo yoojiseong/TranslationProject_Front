@@ -1,51 +1,14 @@
-/* --- 전역 스타일 초기화 및 기본 설정 --- */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-html, body, #root {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    position: relative;
-    overflow-x: hidden; /* 가로 스크롤만 막고 세로 스크롤은 자동으로 둡니다. */
-}
-
-/* --- 전역 배경 스타일 --- */
-body::before, body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -2;
-}
-
-body::before {
-    background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1350&q=80') no-repeat center center;
-    background-size: cover;
-    opacity: 0.15;
-}
-
-body::after {
-    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
-    opacity: 0.6;
-    z-index: -1;
-}
+/* --- ⬇️ 이 코드로 파일 전체를 교체하세요 ⬇️ --- */
 
 /* --- 앱 전체 레이아웃 --- */
 .app-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
 }
 
 .main-content {
-    flex: 1;
+    flex: 1; /* Header와 Footer를 제외한 모든 공간을 차지 */
+    display: flex; /* 내부 콘텐츠 정렬을 위해 추가 */
+    flex-direction: column; /* 내부 콘텐츠 정렬을 위해 추가 */
 }
