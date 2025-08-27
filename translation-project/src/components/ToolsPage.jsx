@@ -65,9 +65,10 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
 
     return (
         <div className="tool-content-wrapper">
-            {/* ✅ 2. "번역" 탭일 때만 언어 선택 UI를 표시 */}
-            {toolName === '번역' && (
-                <div className="language-selector-container">
+            {/* ✅ 2. 언어 선택 영역 - 번역 탭에서만 내용 표시, 다른 탭에서는 빈 공간 확보 */}
+            <div className={`language-selector-container ${toolName === '번역' ? 'translate-tab' : ''}`}>
+                {toolName === '번역' && (
+                    <>
                     {/* 소스 언어 선택 */}
                     <select className="language-select" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
                         <option value="ko">한국어</option>
@@ -120,8 +121,9 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                         <option value="sv">스웨덴어</option>
                         <option value="ar">아랍어</option>
                     </select>
-                </div>
-            )}
+                    </>
+                )}
+            </div>
 
             <div className="io-box">
                 <textarea

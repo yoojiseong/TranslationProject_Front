@@ -1,10 +1,12 @@
 .min-char-counter {
-    margin: 0.75rem 0 0.5rem 0;
+    margin: 0.5rem 0;
     padding: 0.75rem;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     border: 1px solid #e2e8f0;
     font-size: 0.9rem;
+    min-height: 75px; /* 언어 선택 영역과 균형 맞춤 */
+    box-sizing: border-box;
 }
 
 .counter-display {
