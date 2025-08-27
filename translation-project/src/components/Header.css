@@ -1,23 +1,60 @@
 .main-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* space-between -> center: 타이틀 중앙 고정 */
   align-items: center;
-  padding: 60px 30px; /* 패딩 다시 늘림 30px -> 60px (회원가입과 동일 선상) */
+  padding: 90px 30px; /* 높이 적당히 유지 (필요시 조정) */
   background-color: transparent; /* You can adjust the background color */
   font-family: Arial, sans-serif;
   position: relative; /* Added for absolute positioning of children */
 }
 
+/* 절대 위치 제거 + 반응형 폰트 */
 .project-title {
   margin: 0;
-  font-size: 48px;
+  font-size: clamp(26px, 3.8vw, 40px);
   color: #1a2b3c;
   font-weight: bold;
-  position: absolute;
-  left: 50%;
-  top: 50%; /* Added for vertical centering */
-  transform: translate(-50%, -50%); /* Combined for both horizontal and vertical centering */
+  position: static; /* absolute -> static */
+  left: auto;
+  top: auto;
+  transform: none; /* translate 제거 */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+/* 태블릿 이하에서는 좌측 정렬 */
+@media (max-width: 1024px) {
+  .project-title {
+    font-size: clamp(24px, 3.6vw, 36px);
+    white-space: nowrap; /* 한 줄 유지 */
+  }
+}
+
+/* 920~960px 이하부터는 줄바꿈 허용하여 2줄 전환 */
+@media (max-width: 940px) {
+  .project-title {
+    white-space: normal; /* 줄바꿈 허용 */
+    max-width: 85vw;
+    word-break: keep-all;
+    text-wrap: balance; /* 지원 브라우저에서 줄 균형 */
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-header { justify-content: flex-start; }
+  .project-title {
+    margin-left: 30px;
+    transform: none;
+    white-space: normal; /* 모바일에서도 자연스러운 2줄 허용 */
+    max-width: calc(100% - 60px);
+  }
+}
+
+@media (max-width: 480px) {
+  .project-title {
+    line-height: 1.1;
+  }
 }
 
 .header-right {
