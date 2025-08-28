@@ -9,14 +9,7 @@
 .tools-container {
     width: 900px;
     max-width: 900px;
-
-    /* 👈 이 값을 조정하여 헤더/UserNav와의 간격을 확보하세요. */
-    /* 예시로 100px (대략적인 헤더/Nav 높이) + 32px(2rem) = 132px */
-    margin-top: 1px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0.1rem;
-
+    margin: 2rem auto;
     animation: fadeIn 0.8s ease-out;
 }
 
