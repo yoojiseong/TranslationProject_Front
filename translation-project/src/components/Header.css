@@ -3,8 +3,8 @@
     display: flex;
     justify-content: center; /* Center content horizontally */
     align-items: center;     /* Center content vertically */
-    padding-top: 180px;       /* Increased top padding to move logo down */
-    padding-bottom: 20px;
+    padding-top: 80px;
+    padding-bottom: 10px;
     background-color: transparent;
     font-family: Arial, sans-serif;
     position: relative;

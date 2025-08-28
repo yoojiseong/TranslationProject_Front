@@ -1,11 +1,11 @@
 .min-char-counter {
     margin: 0.5rem 0;
-    padding: 0.75rem;
+    padding: 0.85rem;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     border: 1px solid #e2e8f0;
-    font-size: 0.9rem;
-    min-height: 75px; /* 언어 선택 영역과 균형 맞춤 */
+    font-size: 1rem;
+    min-height: 85px; /* 언어 선택 영역과 균형 맞춤 */
     box-sizing: border-box;
 }
 
@@ -17,7 +17,7 @@
 
 .char-count {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 .char-count.valid {
@@ -34,7 +34,7 @@
 }
 
 .requirement {
-    font-size: 0.875rem;
+    font-size: 0.925rem;
 }
 
 .success {
@@ -49,7 +49,7 @@
 
 .help-text {
     margin-top: 0.5rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #64748b;
     font-style: italic;
 }
