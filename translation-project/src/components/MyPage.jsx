@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './MyPage.css'; // CSS 파일 임포트
 import { FaUser, FaEnvelope, FaLock, FaIdBadge } from 'react-icons/fa'; // 아이콘 추가
+import { MdGTranslate } from 'react-icons/md';
+import './Header.css';
+import { Link } from 'react-router-dom';
 import {useAuth} from "../contexts/AuthContext.jsx";
 import apiClient from '../util/axiosInstance';
 
@@ -80,6 +83,9 @@ const MyPage = () => {
 
     return (
         <div className="login-container">
+            <Link to="/toolspage" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <h1 className="project-title" style={{paddingBottom: '20px'}}><MdGTranslate color="#6a5acd" /> Translate Project</h1>
+            </Link>
             <div className="login-box">
                 <h1 className="login-title">마이페이지</h1>
                 <p className="login-subtitle">{user.userName}님의 정보를 확인하고 수정할 수 있습니다.</p>

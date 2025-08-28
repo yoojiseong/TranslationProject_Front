@@ -1,11 +1,13 @@
+
 .main-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 60px 30px; /* 패딩 다시 늘림 30px -> 60px (회원가입과 동일 선상) */
-    background-color: transparent; /* You can adjust the background color */
+    justify-content: center; /* Center content horizontally */
+    align-items: center;     /* Center content vertically */
+    padding-top: 180px;       /* Increased top padding to move logo down */
+    padding-bottom: 20px;
+    background-color: transparent;
     font-family: Arial, sans-serif;
-    position: relative; /* Added for absolute positioning of children */
+    position: relative;
 }
 
 .project-title {
@@ -13,11 +15,8 @@
     font-size: 48px;
     color: #1a2b3c;
     font-weight: bold;
-    position: absolute;
-    left: 50%;
-    top: 50%; /* Added for vertical centering */
-    transform: translate(-50%, -50%); /* Combined for both horizontal and vertical centering */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 6px rgba(0, 0, 0, 0.3);
+    /* Absolute positioning removed */
 }
 
 .header-right {
@@ -56,6 +55,29 @@
     transition: color 0.3s ease;
 }
 
+
 .nav-link:hover {
     color: #0056b3; /* Hover effect */
+}
+
+@media (max-width: 768px) {
+    .project-title {
+        font-size: 24px; /* 화면이 작아졌을 때 폰트 크기 줄임 */
+        position: static; /* static으로 변경하여 다른 요소들과 자연스럽게 배치 */
+        transform: none; /* transform 제거 */
+        text-align: center; /* 가운데 정렬 */
+        width: 100%; /* 전체 너비 차지 */
+        order: 1; /* 로고를 첫 번째 순서로 배치 */
+    }
+
+    .main-header {
+        flex-direction: column; /* 요소들을 세로로 정렬 */
+        padding: 20px 15px; /* 패딩 줄임 */
+    }
+
+    .header-right {
+        position: static; /* static으로 변경 */
+        margin-top: 15px; /* 제목과의 간격 추가 */
+        order: 2; /* 사용자 네비게이션을 두 번째 순서로 배치 */
+    }
 }
