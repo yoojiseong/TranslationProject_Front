@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../util/axiosInstance';
 import './HistoryPanel.css';
 
-const HistoryPanel = ({ refreshKey, onHistoryClick }) => {
+const HistoryPanel = ({ refreshKey, onHistoryClick, onRefresh }) => { // onRefresh prop 추가
     const [history, setHistory] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -10,7 +10,6 @@ const HistoryPanel = ({ refreshKey, onHistoryClick }) => {
         const fetchHistory = async () => {
             setIsLoading(true);
             try {
-                // 백엔드에 히스토리 목록 요청
                 const response = await apiClient.get('/history');
                 setHistory(response.data);
             } catch (error) {
@@ -20,7 +19,29 @@ const HistoryPanel = ({ refreshKey, onHistoryClick }) => {
             }
         };
         fetchHistory();
-    }, [refreshKey]); // refreshKey가 변경될 때마다 목록을 다시 불러옴
+    }, [refreshKey]);
+
+    // ▼▼▼▼▼▼▼▼▼▼ [추가된 부분] ▼▼▼▼▼▼▼▼▼▼
+    /**
+     * 삭제 버튼 클릭 시 실행될 함수
+     * @param {number} historyId - 삭제할 히스토리 항목의 ID
+     */
+    const handleDelete = async (historyId, e) => {
+        e.stopPropagation(); // 이벤트 버블링 방지 (상위의 onHistoryClick 실행 안되게)
+
+        if (window.confirm("정말로 이 기록을 삭제하시겠습니까?")) {
+            try {
+                // 백엔드에 DELETE 요청 전송
+                await apiClient.delete(`/history/${historyId}`);
+                // 삭제 성공 시, 부모 컴포넌트의 onRefresh 함수를 호출하여 목록을 갱신
+                onRefresh();
+            } catch (error) {
+                console.error("Failed to delete history:", error);
+                alert("기록 삭제에 실패했습니다.");
+            }
+        }
+    };
+    // ▲▲▲▲▲▲▲▲▲▲ [추가된 부분] ▲▲▲▲▲▲▲▲▲▲
 
     return (
         <aside className="history-panel">
@@ -31,9 +52,16 @@ const HistoryPanel = ({ refreshKey, onHistoryClick }) => {
                 ) : history.length > 0 ? (
                     history.map((item) => (
                         <div key={item.id} className="history-item" onClick={() => onHistoryClick(item)}>
-                            <strong className="history-tool-type">{item.toolType}</strong>
-                            <p className="history-input-text">{item.inputText}</p>
-                            <span className="history-timestamp">{new Date(item.timestamp).toLocaleString()}</span>
+                            {/* ▼▼▼▼ [수정/추가된 부분] ▼▼▼▼ */}
+                            <div className="history-item-content">
+                                <strong className="history-tool-type">{item.toolType}</strong>
+                                <p className="history-input-text">{item.inputText}</p>
+                                <span className="history-timestamp">{new Date(item.timestamp).toLocaleString()}</span>
+                            </div>
+                            <button className="delete-history-btn" onClick={(e) => handleDelete(item.id, e)}>
+                                ×
+                            </button>
+                            {/* ▲▲▲▲ [수정/추가된 부분] ▲▲▲▲ */}
                         </div>
                     ))
                 ) : (
