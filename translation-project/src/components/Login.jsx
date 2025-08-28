@@ -1,6 +1,8 @@
 import React, { useState , useEffect } from "react";
 import {FaUser, FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
+import { MdGTranslate } from 'react-icons/md';
 import "./Login.css";
+import './Header.css';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../contexts/AuthContext.jsx";
@@ -82,6 +84,7 @@ const Login = () => {
 
     return (
         <div className="login-container">
+            <h1 className="project-title" style={{paddingBottom: '20px'}}><MdGTranslate color="#6a5acd" /> Translate Project</h1>
             <div className="login-box">
                 <h2 className="login-title">Welcome Back!</h2>
                 <p className="login-subtitle">로그인하여 계속 진행하세요.</p>

@@ -38,6 +38,7 @@ body::after {
 /* 3️⃣ 로그인/회원가입 컨테이너 */
 .login-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;

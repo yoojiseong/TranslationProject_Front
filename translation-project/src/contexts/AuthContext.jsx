@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
                 }
             } else {
                 logout(); // 만료된 경우 자동 로그아웃
-                navigate('/login');
             }
         }
     }, []);
@@ -102,8 +101,8 @@ export const AuthProvider = ({ children }) => {
         setRemainingTime(null);
         if (logoutTimer) {
             clearTimeout(logoutTimer);
-            navigate('/login');
         }
+        navigate('/login');
     };
 
     // 🔹 10분 연장 기능 (중복 실행 방지)

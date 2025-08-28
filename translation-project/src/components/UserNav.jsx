@@ -10,7 +10,6 @@ const UserNav = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
   };
 
   return (
@@ -24,7 +23,7 @@ const UserNav = () => {
             <a href="/mypage" className="nav-link">마이페이지</a>
           </li>
           <li className="nav-item">
-            <a href="#" onClick={handleLogout} className="nav-link">로그아웃</a>
+            <button onClick={handleLogout} className="nav-link nav-button-link">로그아웃</button>
           </li>
         </ul>
       </nav>

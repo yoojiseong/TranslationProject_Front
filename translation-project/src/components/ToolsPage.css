@@ -3,20 +3,14 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding-bottom: 80px; /* 푸터 공간 확보 */
 }
 
 /* 메인 콘텐츠(탭과 입력창 포함) 영역 */
 .tools-container {
-    width: 900px;
-    max-width: 900px;
-
-    /* 👈 이 값을 조정하여 헤더/UserNav와의 간격을 확보하세요. */
-    /* 예시로 100px (대략적인 헤더/Nav 높이) + 32px(2rem) = 132px */
-    margin-top: 1px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0.1rem;
-
+    width: clamp(320px, 90vw, 900px); /* 최대 너비 800 -> 900 */
+    max-width: none;
+    margin: 1rem auto; /* 유지 */
     animation: fadeIn 0.8s ease-out;
 }
 
@@ -32,8 +26,8 @@
 
 .tab-button {
     flex: 1;
-    padding: 1rem;
-    font-size: 1.1rem;
+    padding: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #4a5568;
     background: transparent;
@@ -56,10 +50,10 @@
 /* 탭 콘텐츠 영역 */
 .content-area {
     background: rgba(255, 255, 255, 0.95);
-    padding: 2.5rem;
+    padding: 2.2rem; /* 2rem -> 2.2rem */
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     box-sizing: border-box;
 }
 
@@ -71,17 +65,17 @@
 .io-box {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem; /* 1.5rem -> 1rem */
+    margin-bottom: 1rem; /* 1.5rem -> 1rem */
 }
 
 .io-box textarea {
     width: 100%;
-    min-height: 180px;
-    padding: 1rem;
+    min-height: 160px; /* 140px -> 160px */
+    padding: 1rem; /* 0.875rem -> 1rem */
     border-radius: 12px;
     border: 2px solid #e2e8f0;
-    font-size: 1rem;
+    font-size: 1rem; /* 0.95rem -> 1rem */
     font-family: inherit;
     resize: vertical;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -103,9 +97,9 @@
 .action-button {
     background-color: #38a169;
     color: white;
-    font-size: 1.125rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    padding: 1rem;
+    padding: 1.1rem;
     width: 100%;
     border: none;
     border-radius: 12px;
@@ -142,7 +136,7 @@
     display: flex;
     justify-content: center; /* 가운데 정렬로 변경 */
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem; /* 1.5rem -> 1rem */
     padding: 0.5rem;
     background-color: #f7fafc;
     border-radius: 12px;
@@ -151,8 +145,8 @@
 /* 언어 선택 드롭다운 (<select>) 스타일 */
 .language-select {
     flex: 1;
-    padding: 0.75rem;
-    font-size: 1rem;
+    padding: 0.85rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: #4a5568;
     background-color: white;
@@ -163,7 +157,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    max-width: 200px; /* 너비 제한 */
+    max-width: 200px;
 }
 
 .language-select:focus {
@@ -197,4 +191,26 @@
 .single-language-selector span {
     font-weight: 600;
     color: #4a5568;
+}
+
+@media (max-width: 1200px) {
+    /* 폭 변경 제거: clamp로 일괄 관리 */
+}
+
+@media (max-width: 1024px) {
+    .content-area { padding: 1.75rem; }
+    .io-box textarea { min-height: 130px; font-size: 0.95rem; }
+}
+
+@media (max-width: 768px) {
+    /* 폭 변경 제거: clamp로 일괄 관리 */
+    .content-area { padding: 1.5rem; }
+    .io-box { gap: 0.875rem; margin-bottom: 0.875rem; }
+    .io-box textarea { min-height: 120px; font-size: 0.92rem; padding: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+    /* 폭 변경 제거: clamp로 일괄 관리 */
+    .content-area { padding: 1.25rem; }
+    .io-box textarea { min-height: 110px; font-size: 0.9rem; padding: 0.7rem; }
 }
