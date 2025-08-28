@@ -21,11 +21,6 @@ const HistoryPanel = ({ refreshKey, onHistoryClick, onRefresh }) => { // onRefre
         fetchHistory();
     }, [refreshKey]);
 
-    // ▼▼▼▼▼▼▼▼▼▼ [추가된 부분] ▼▼▼▼▼▼▼▼▼▼
-    /**
-     * 삭제 버튼 클릭 시 실행될 함수
-     * @param {number} historyId - 삭제할 히스토리 항목의 ID
-     */
     const handleDelete = async (historyId, e) => {
         e.stopPropagation(); // 이벤트 버블링 방지 (상위의 onHistoryClick 실행 안되게)
 
@@ -41,7 +36,6 @@ const HistoryPanel = ({ refreshKey, onHistoryClick, onRefresh }) => { // onRefre
             }
         }
     };
-    // ▲▲▲▲▲▲▲▲▲▲ [추가된 부분] ▲▲▲▲▲▲▲▲▲▲
 
     return (
         <aside className="history-panel">
@@ -52,16 +46,14 @@ const HistoryPanel = ({ refreshKey, onHistoryClick, onRefresh }) => { // onRefre
                 ) : history.length > 0 ? (
                     history.map((item) => (
                         <div key={item.id} className="history-item" onClick={() => onHistoryClick(item)}>
-                            {/* ▼▼▼▼ [수정/추가된 부분] ▼▼▼▼ */}
                             <div className="history-item-content">
                                 <strong className="history-tool-type">{item.toolType}</strong>
                                 <p className="history-input-text">{item.inputText}</p>
                                 <span className="history-timestamp">{new Date(item.timestamp).toLocaleString()}</span>
                             </div>
                             <button className="delete-history-btn" onClick={(e) => handleDelete(item.id, e)}>
-                                ×
+                                X
                             </button>
-                            {/* ▲▲▲▲ [수정/추가된 부분] ▲▲▲▲ */}
                         </div>
                     ))
                 ) : (

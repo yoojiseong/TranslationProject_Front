@@ -1,10 +1,10 @@
-.history-panel {
-    /* ★ 수정: 레이아웃을 'fixed'로 변경하여 화면에 고정 */
-    position: fixed;
-    top: 120px;          /* 헤더 아래에 위치 (헤더 높이에 따라 조절) */
-    right: 20px;         /* 화면 오른쪽에서 20px 띄움 */
-    bottom: 80px;        /* 푸터 위에 위치 (푸터 높이에 따라 조절) */
+/* HistoryPanel.css */
 
+.history-panel {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    bottom: 80px;
     width: 300px;
     min-width: 280px;
     background-color: #f8f9fa;
@@ -12,9 +12,25 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    border-radius: 12px; /* 모서리를 둥글게 */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    z-index: 10; /* 다른 요소 위에 오도록 z-index 설정 */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+@media (max-width: 1200px) {
+    .history-panel {
+        /* ★★★ 고정 위치를 해제하고 일반 블록 요소처럼 동작하게 변경 ★★★ */
+        position: static;
+        width: 100%; /* 너비를 100%로 채움 */
+        height: auto; /* 높이는 콘텐츠에 맞게 자동 조절 */
+        max-height: 40vh; /* 화면 높이의 40%를 넘지 않도록 제한 */
+        border-radius: 0;
+        box-shadow: none;
+        border-top: 1px solid #dee2e6; /* 위쪽 구분선 추가 */
+        bottom: auto; /* 기존 bottom 값 초기화 */
+        right: auto;  /* 기존 right 값 초기화 */
+    }
 }
 
 .history-panel h2 {
@@ -28,15 +44,19 @@
 
 .history-list {
     flex-grow: 1;
-    overflow-y: auto; /* 내용이 많아지면 스크롤 생성 */
+    overflow-y: auto;
     padding-right: 5px;
 }
 
 .history-item {
-    /* flexbox로 변경하여 내부 요소 정렬 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
 }
 
 .history-item:hover {
@@ -44,11 +64,16 @@
     transform: translateY(-2px);
 }
 
+.history-item-content {
+    padding-right: 30px;
+}
+
 .history-tool-type {
     font-size: 0.9rem;
     color: #007bff;
     margin-bottom: 5px;
     display: block;
+    font-weight: bold;
 }
 
 .history-input-text {
@@ -60,6 +85,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .history-timestamp {
@@ -67,29 +93,27 @@
     color: #6c757d;
 }
 
-.history-item-content {
-    /* 텍스트 영역이 늘어나도록 설정 */
-    flex-grow: 1;
-    margin-right: 10px; /* 버튼과의 간격 */
-}
-
 .delete-history-btn {
-    background: #e9ecef;
-    color: #868e96;
+    /* 1. 위치는 그대로 오른쪽 위에 고정 */
+    position: absolute;
+    top: 10px;
+    right: 12px;
+
+    /* 2. 배경과 테두리를 모두 투명하게 만듦 */
+    background: transparent;
     border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 16px;
+
+    /* 3. X 글자 스타일 조정 */
+    color: #adb5bd; /* 기본 색상을 연한 회색으로 */
+    font-size: 20px; /* 글자 크기를 살짝 키움 */
     font-weight: bold;
-    line-height: 24px;
-    text-align: center;
+    line-height: 1; /* 줄 간격 조정 */
+    padding: 2px; /* 클릭 영역 확보 */
     cursor: pointer;
-    flex-shrink: 0; /* 버튼 크기 고정 */
-    transition: background-color 0.2s, color 0.2s;
+    transition: color 0.2s;
 }
 
 .delete-history-btn:hover {
-    background: #dc3545;
-    color: white;
+    color: #dc3545; /* 마우스를 올리면 빨간색으로 변경 */
+    background: transparent; /* hover 시에도 배경은 투명 유지 */
 }
