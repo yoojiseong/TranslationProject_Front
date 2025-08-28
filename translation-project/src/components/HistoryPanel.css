@@ -1,0 +1,95 @@
+.history-panel {
+    /* ★ 수정: 레이아웃을 'fixed'로 변경하여 화면에 고정 */
+    position: fixed;
+    top: 120px;          /* 헤더 아래에 위치 (헤더 높이에 따라 조절) */
+    right: 20px;         /* 화면 오른쪽에서 20px 띄움 */
+    bottom: 80px;        /* 푸터 위에 위치 (푸터 높이에 따라 조절) */
+
+    width: 300px;
+    min-width: 280px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px; /* 모서리를 둥글게 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+    z-index: 10; /* 다른 요소 위에 오도록 z-index 설정 */
+}
+
+.history-panel h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #343a40;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.history-list {
+    flex-grow: 1;
+    overflow-y: auto; /* 내용이 많아지면 스크롤 생성 */
+    padding-right: 5px;
+}
+
+.history-item {
+    /* flexbox로 변경하여 내부 요소 정렬 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.history-tool-type {
+    font-size: 0.9rem;
+    color: #007bff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.history-input-text {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    color: #495057;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-timestamp {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.history-item-content {
+    /* 텍스트 영역이 늘어나도록 설정 */
+    flex-grow: 1;
+    margin-right: 10px; /* 버튼과의 간격 */
+}
+
+.delete-history-btn {
+    background: #e9ecef;
+    color: #868e96;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    flex-shrink: 0; /* 버튼 크기 고정 */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.delete-history-btn:hover {
+    background: #dc3545;
+    color: white;
+}

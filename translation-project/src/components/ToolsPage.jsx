@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Navigate} from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Navigate } from 'react-router-dom';
 import Header from './Header.jsx';
 import UserNav from './UserNav.jsx';
 import Footer from './Footer.jsx';
@@ -8,22 +7,26 @@ import './ToolsPage.css';
 import apiClient from '../util/axiosInstance.jsx';
 import MinCharacterCounter from './MinCharacterCounter.jsx';
 import SimpleCharacterCounter from './SimpleCharacterCounter.jsx';
+import HistoryPanel from "./HistoryPanel.jsx";
 
-const ToolInterface = ({ toolName, apiEndpoint }) => {
+// ToolInterface 컴포넌트는 변경 사항이 없습니다.
+const ToolInterface = ({ toolName, apiEndpoint, initialData, onActionSuccess }) => {
     const [inputText, setInputText] = useState('');
     const [outputText, setOutputText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [sourceLang, setSourceLang] = useState('ko');
+    const [targetLang, setTargetLang] = useState('en');
 
-    // ✅ 1. 소스(source) 언어와 타겟(target) 언어를 위한 상태 추가
-    const [sourceLang, setSourceLang] = useState('ko'); // 기본값: 한국어
-    const [targetLang, setTargetLang] = useState('en'); // 기본값: 영어
+    useEffect(() => {
+        // initialData가 있으면 그 값으로 상태를 설정하고, 없으면 빈 값으로 유지합니다.
+        setInputText(initialData?.text || '');
+        setOutputText(initialData?.result || '');
+    }, [initialData]); // initialData가 변경될 때마다 이 로직이 실행됩니다.
 
-    // ✅ 언어 전환(swap) 함수
     const handleSwapLanguages = () => {
-        const tempLang = sourceLang;
         setSourceLang(targetLang);
-        setTargetLang(tempLang);
+        setTargetLang(sourceLang);
     };
 
     const handleSubmit = async () => {
@@ -31,8 +34,6 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
             setError('내용을 입력해주세요.');
             return;
         }
-
-        // 요약 기능일 때 최소 글자수 체크
         if (toolName === '요약' && inputText.length < 50) {
             setError('요약을 위해 최소 50자 이상 입력해주세요.');
             return;
@@ -40,18 +41,15 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
         setIsLoading(true);
         setError(null);
         setOutputText('');
-
         try {
-            // ✅ 3. API로 보낼 데이터에 선택된 언어 상태를 반영
             const requestData = toolName === '번역'
-                ? { text: inputText, sourceLang: sourceLang, targetLang: targetLang }
+                ? { text: inputText, sourceLang, targetLang }
                 : { text: inputText, language: sourceLang };
-
             const response = await apiClient.post(apiEndpoint, requestData);
             const resultText = response.data.result || response.data.translatedText;
-
             if (resultText) {
                 setOutputText(resultText);
+                if (onActionSuccess) onActionSuccess();
             } else {
                 setError('결과를 받아오지 못했습니다. 백엔드 응답 형식을 확인해주세요.');
             }
@@ -65,7 +63,6 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
 
     return (
         <div className="tool-content-wrapper">
-            {/* ✅ 2. 언어 선택 영역 - 번역 탭에서만 내용 표시, 다른 탭에서는 빈 공간 확보 */}
             <div className="language-selector-container">
                 {toolName === '번역' ? (
                     <>
@@ -143,7 +140,6 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                     </div>
                 )}
             </div>
-
             <div className="io-box">
                 <textarea
                     placeholder={`${toolName}할 내용을 입력하세요...`}
@@ -151,33 +147,14 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
                     onChange={(e) => setInputText(e.target.value)}
                     disabled={isLoading}
                 />
-
-                {/* 🆕 글자수 체크 컴포넌트 추가 */}
                 {toolName === '요약' ? (
-                    <MinCharacterCounter
-                        text={inputText}
-                        minLength={50}
-                        toolName={toolName}
-                        className="tool-counter"
-                    />
+                    <MinCharacterCounter text={inputText} minLength={50} toolName={toolName} className="tool-counter" />
                 ) : (
-                    <SimpleCharacterCounter
-                        text={inputText}
-                        className="tool-counter"
-                    />
+                    <SimpleCharacterCounter text={inputText} className="tool-counter" />
                 )}
-
-                <textarea
-                    placeholder={`${toolName} 결과`}
-                    value={outputText}
-                    readOnly
-                />
+                <textarea placeholder={`${toolName} 결과`} value={outputText} readOnly />
             </div>
-            <button
-                className="action-button"
-                onClick={handleSubmit}
-                disabled={isLoading || (toolName === '요약' && inputText.length < 50)}
-            >
+            <button className="action-button" onClick={handleSubmit} disabled={isLoading || (toolName === '요약' && inputText.length < 50)}>
                 {isLoading ? '변환 중...' : `${toolName}하기`}
             </button>
             {error && <p className="error-message">{error}</p>}
@@ -186,45 +163,68 @@ const ToolInterface = ({ toolName, apiEndpoint }) => {
 };
 
 const ToolsPage = () => {
+    // ★★★ 1. 모든 훅(Hook)들을 컴포넌트 최상단으로 이동 ★★★
     const [activeTab, setActiveTab] = useState('translate');
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [toolInitialData, setToolInitialData] = useState(null);
 
+    const handleActionSuccess = useCallback(() => {
+        setRefreshKey(prevKey => prevKey + 1);
+    }, []);
+
+    const handleHistoryClick = useCallback((historyItem) => {
+        if (historyItem.toolType === '번역') setActiveTab('translate');
+        else if (historyItem.toolType === '요약') setActiveTab('summarize');
+        else if (historyItem.toolType === '의역') setActiveTab('paraphrase');
+        setToolInitialData({
+            key: Date.now(),
+            text: historyItem.inputText,
+            result: historyItem.outputText // 'result'라는 이름으로 결과 텍스트 추가
+        });
+    }, []);
+
+    const handleTabClick = (tabName) => {
+        setActiveTab(tabName);
+        // 탭을 전환할 때 히스토리 데이터를 null로 초기화합니다.
+        setToolInitialData(null);
+    };
+
+    // ★★★ 2. 훅 선언이 모두 끝난 후, 조건부 리턴 로직 실행 ★★★
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
-        return <Navigate to="/login" replace/>;
+        return <Navigate to="/login" replace />;
     }
 
+    // ★★★ 3. 이제 훅들은 항상 같은 순서로 호출되므로, JSX를 안전하게 리턴할 수 있음 ★★★
     return (
         <div className="tools-page-wrapper">
             <Header />
             <UserNav />
-            <main className="tools-container">
-                <div className="tab-container">
-                    <button
-                        className={`tab-button ${activeTab === 'translate' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('translate')}
-                    >
-                        번역
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'summarize' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('summarize')}
-                    >
-                        요약
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'paraphrase' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('paraphrase')}
-                    >
-                        의역
-                    </button>
-                </div>
-                <div className="content-area">
-                    {/* ⚠️ 중요: 아래 apiEndpoint 주소는 실제 백엔드 주소에 맞게 수정해야 합니다. */}
-                    {activeTab === 'translate' && <ToolInterface toolName="번역" apiEndpoint="/translate"/>}
-                    {activeTab === 'summarize' && <ToolInterface toolName="요약" apiEndpoint="/summarize"/>}
-                    {activeTab === 'paraphrase' && <ToolInterface toolName="의역" apiEndpoint="/paraphrase"/>}
-                </div>
-            </main>
+            <div className="tools-main-content">
+                <HistoryPanel
+                    refreshKey={refreshKey}
+                    onHistoryClick={handleHistoryClick}
+                    onRefresh={handleActionSuccess}
+                />
+                <main className="tools-container">
+                    <div className="tab-container">
+                        <button className={`tab-button ${activeTab === 'translate' ? 'active' : ''}`} onClick={() => handleTabClick('translate')}>
+                            번역
+                        </button>
+                        <button className={`tab-button ${activeTab === 'summarize' ? 'active' : ''}`} onClick={() => handleTabClick('summarize')}>
+                            요약
+                        </button>
+                        <button className={`tab-button ${activeTab === 'paraphrase' ? 'active' : ''}`} onClick={() => handleTabClick('paraphrase')}>
+                            의역
+                        </button>
+                    </div>
+                    <div className="content-area">
+                        {activeTab === 'translate' && <ToolInterface key={toolInitialData?.key} toolName="번역" apiEndpoint="/translate" initialData={toolInitialData} onActionSuccess={handleActionSuccess} />}
+                        {activeTab === 'summarize' && <ToolInterface key={toolInitialData?.key} toolName="요약" apiEndpoint="/summarize" initialData={toolInitialData} onActionSuccess={handleActionSuccess} />}
+                        {activeTab === 'paraphrase' && <ToolInterface key={toolInitialData?.key} toolName="의역" apiEndpoint="/paraphrase" initialData={toolInitialData} onActionSuccess={handleActionSuccess} />}
+                    </div>
+                </main>
+            </div>
             <Footer />
         </div>
     );
