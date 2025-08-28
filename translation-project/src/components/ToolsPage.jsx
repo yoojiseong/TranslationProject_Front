@@ -201,11 +201,7 @@ const ToolsPage = () => {
             <Header />
             <UserNav />
             <div className="tools-main-content">
-                <HistoryPanel
-                    refreshKey={refreshKey}
-                    onHistoryClick={handleHistoryClick}
-                    onRefresh={handleActionSuccess}
-                />
+
                 <main className="tools-container">
                     <div className="tab-container">
                         <button className={`tab-button ${activeTab === 'translate' ? 'active' : ''}`} onClick={() => handleTabClick('translate')}>
@@ -224,6 +220,11 @@ const ToolsPage = () => {
                         {activeTab === 'paraphrase' && <ToolInterface key={toolInitialData?.key} toolName="의역" apiEndpoint="/paraphrase" initialData={toolInitialData} onActionSuccess={handleActionSuccess} />}
                     </div>
                 </main>
+                <HistoryPanel
+                    refreshKey={refreshKey}
+                    onHistoryClick={handleHistoryClick}
+                    onRefresh={handleActionSuccess}
+                />
             </div>
             <Footer />
         </div>
