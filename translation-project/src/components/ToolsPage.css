@@ -5,22 +5,34 @@
     min-height: 100vh;
 }
 
-/* ★★★ 1. '왼쪽/오른쪽' 구조를 만드는 flexbox 컨테이너 ★★★ */
 .tools-main-content {
     display: flex;
-    flex-grow: 1; /* Header와 Footer를 제외한 모든 수직 공간 차지 */
-    overflow: hidden; /* 스크롤바가 전체 페이지가 아닌 필요한 곳에만 생기도록 함 */
+    flex-grow: 1;
+    overflow: hidden;
 }
 
-/* ★★★ 2. 오른쪽 메인 툴 영역 스타일 ★★★ */
-/* 기존 .tools-container 스타일을 이곳으로 옮기고 수정합니다. */
+/* ★ 1. 중앙 컨테이너를 넓게 만듭니다. */
 .tools-container {
-    flex-grow: 1; /* HistoryPanel을 제외한 나머지 공간을 모두 차지 */
-    padding: 2rem 3rem; /* 좌우 패딩을 넉넉하게 줍니다. */
+    flex-grow: 1;
+    padding: 2rem 2.0rem; /* 좌우 패딩 유지 */
     animation: fadeIn 0.8s ease-out;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* 내용이 길어지면 이 영역만 스크롤됩니다. */
+    overflow-y: auto; /* max-width와 margin:auto를 제거하여 가능한 모든 너비를 사용하도록 합니다. */
+}
+
+.history-panel {
+    flex-basis: 320px;
+    flex-shrink: 0;
+    background-color: #f8f9fa;
+    border-left: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+    .history-panel { display: none; }
+    .tools-container { padding: 1rem; }
 }
 
 /* 탭 버튼 컨테이너 */
@@ -31,14 +43,14 @@
     padding: 0.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-    /* 너비가 부모 요소에 맞게 꽉 차도록 설정 */
     width: 100%;
 }
 
+/* ★ 2. 탭 버튼의 상하 패딩을 줄입니다. */
 .tab-button {
     flex: 1;
-    padding: 1.1rem;
-    font-size: 1.2rem;
+    padding: 0.6rem 0.8rem; /* 상하 패딩을 0.8rem으로 축소 */
+    font-size: 1.1rem; /* 폰트 크기 미세 조정 */
     font-weight: 700;
     color: #4a5568;
     background: transparent;
@@ -61,26 +73,29 @@
 /* 탭 콘텐츠 영역 */
 .content-area {
     background: rgba(255, 255, 255, 0.95);
-    padding: 2.2rem;
+    padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     margin-top: 0.75rem;
     box-sizing: border-box;
-    width: 100%; /* 너비가 부모 요소에 맞게 꽉 차도록 설정 */
-}
-
-/* ToolInterface 내부 스타일 (이하 변경 없음) */
-.tool-content-wrapper {
+    width: 100%; /* 내부 요소가 높이를 채울 수 있도록 flex 설정 추가 */
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+}
+
+/* ToolInterface 내부 */
+.tool-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* content-area 내부에서 가능한 모든 높이를 차지 */
     gap: 15px;
 }
 
 .language-selector-container {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .single-language-selector {
@@ -112,12 +127,13 @@
     background-color: #4f46e5;
 }
 
+/* ★ 4. 텍스트 입출력 창을 감싸는 박스를 키웁니다. */
 .io-box {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    flex-grow: 1;
-    min-height: 250px;
+    flex-grow: 1; /* 사용 가능한 모든 세로 공간을 차지 */
+    min-height: 400px; /* 최소 높이를 늘려 더 크게 보이도록 함 */
 }
 
 .io-box textarea {
@@ -168,13 +184,14 @@
     font-weight: 500;
 }
 
+/* ★ 3. 글자 수 카운터를 작게 만듭니다. */
 .tool-counter {
     position: relative;
     bottom: 5px;
     right: 5px;
     text-align: right;
-    font-size: 0.9em;
-    color: #6c757d;
-    margin-top: -30px;
+    font-size: 0.8em; /* 폰트 크기 축소 */
+    color: #aaa; /* 더 연한 회색으로 변경 */
+    margin-top: -25px; /* 위치 미세 조정 */
     padding-right: 10px;
 }

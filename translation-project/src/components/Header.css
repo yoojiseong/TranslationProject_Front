@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center; /* Center content horizontally */
     align-items: center;     /* Center content vertically */
-    padding-top: 80px;
+    padding-top: 20px;
     padding-bottom: 10px;
     background-color: transparent;
     font-family: Arial, sans-serif;
